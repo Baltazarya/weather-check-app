@@ -1,11 +1,18 @@
 import requests
 from dotenv import load_dotenv  
 import os
+import datetime
 
 load_dotenv()
 
 api_key= os.getenv("OpenWeatherMap_API")
 
+unix_time = 1661324766
+
+# Convert Unix time to datetime object
+datetime_obj = datetime.datetime.fromtimestamp(unix_time)
+
+print(datetime_obj)
 
 def get_coordinates(city, state, country, api_key):
     # URL da Geocoding API
@@ -32,7 +39,6 @@ def get_coordinates(city, state, country, api_key):
   
     
 
-
 def get_weather(latitude, longitude, api_key):
     # URL da API OpenWeatherMap
     url = f"http://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={api_key}&units=metric"
@@ -51,7 +57,7 @@ def get_weather(latitude, longitude, api_key):
         temp_max = data["main"]["temp_max"]
         temp_min = data["main"]["temp_min"]
         nome = data["name"]
-        horario = data["dt"]
+        horario = datetime.datetime.fromtimestamp(int(data["dt"]))
         
         # Exibindo os resultados
         print(f"Clima em {nome}:")
@@ -66,7 +72,6 @@ def get_weather(latitude, longitude, api_key):
 
 if __name__ == "__main__":
 
-    
     # Solicita ao usuário o nome da cidade, estado e país
     city = input("Digite o nome da cidade: ")
     state = input("Digite o nome do estado (opcional, pressione Enter para pular): ")
